@@ -1,19 +1,16 @@
 create database Library_Gnidez;
-
 use Library_Gnidez;
-drop table Authors;
+
 create table Authors(
 	Id int primary key identity(1,1) not null,
 	[Name] nvarchar(100) not null check(Name != '') default('NoName')
 )
-drop table Books;
 create table Books(
 	Id int primary key identity(1,1) not null,
 	[Name] nvarchar(100) not null check(Name != '') default('NoName'),
 	-- [ReleaseDate] date not null default(getdate()),
 	--AuthorId int foreign key references Author(Id)
 )
-drop table Visitors;
 create table Visitors(
 	Id int primary key identity(1,1) not null,
 	[Name] nvarchar(100) not null check(Name != '') default('NoName'),
@@ -26,17 +23,18 @@ create table BooksAuthors(
 	BookId int foreign key references Books(Id),
 	AuthorId int foreign key references Authors(Id)
 )
-drop table BooksVisitors;
 create table BooksVisitors(
 	BookId int foreign key references Books(Id),
 	VisitorId int foreign key references Visitors(Id)
 )
+insert into Visitors values('Baobab','Pushkin',1)
+insert into Visitors(Name,Surname,IsDebtor) values ('Andriy','Gritsenko',1)
+insert into Authors(Name) values ('Anton')
+insert into BooksAuthors(BookId,AuthorId) values(2,2)
+
 select * from Books
 select * from Authors
 select * from BooksAuthors
 
-insert into Visitors(Name,Surname,IsDebtor) values ('Andriy','Gritsenko',1)
-insert into Authors(Name) values ('Anton')
-
+--
 select a.Name from Books as b join BooksAuthors as ba on b.Id = ba.BookId join Authors as a on a.Id = ba.AuthorId where a.Name = '{authorTxtBox.Text}'
-insert into BooksAuthors(BookId,AuthorId) values(2,2)
