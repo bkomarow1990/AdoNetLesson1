@@ -16,27 +16,29 @@ using System.Windows.Shapes;
 namespace AdoNetLesson1
 {
     /// <summary>
-    /// Interaction logic for ShowBookWithAuthor.xaml
+    /// Interaction logic for Window1.xaml
     /// </summary>
-    public partial class ShowBookWithAuthor : Window
+    public partial class Window1 : Window
     {
-        MainWindow mw;
-        public ShowBookWithAuthor(MainWindow mw)
+        MainWindow mw = null;
+        public Window1(MainWindow mw)
         {
-            this.mw = mw;
             InitializeComponent();
+            this.mw = mw;
         }
 
         private void showBtn_Click(object sender, RoutedEventArgs e)
         {
-            
-            try {
+            try
+            {
                 itemsListBox.Items.Clear();
-                string command = $"select b.Name from Books as b join BooksAuthors as ba on b.Id = ba.BookId join Authors as a on a.Id = ba.AuthorId where a.Name = @Author_Name";
+                string command = $"select b.Name from BooksVisitors as bv join Books as b on b.Id = bv.BookId join Visitors as v on v.Id = bv.VisitorId where v.Name = @Visitor_Name and v.Surname = @Visitor_Surname";
                 SqlCommand comm = new SqlCommand(command, DbConnect.connection);
-                comm.Parameters.AddWithValue("@Author_Name", authorTxtBox.Text);
-                mw.viewModel.db_connection.reader = comm.ExecuteReader();
+                comm.Parameters.AddWithValue("@Visitor_Name", visitorNameTxtBox.Text);
+                comm.Parameters.AddWithValue("@Visitor_Surname", visitorNameTxtBox.Text);
                 
+                mw.viewModel.db_connection.reader = comm.ExecuteReader();
+
                 while (mw.viewModel.db_connection.reader.Read())
                 {
                     for (int i = 0; i < mw.viewModel.db_connection.reader.FieldCount; i++)
@@ -47,12 +49,12 @@ namespace AdoNetLesson1
                 }
                 mw.viewModel.db_connection.reader.Close();
             }
-            
-            catch (Exception ex) {
+
+            catch (Exception ex)
+            {
                 MessageBox.Show(ex.Message);
                 mw.viewModel.db_connection.reader.Close();
             }
         }
-
     }
 }

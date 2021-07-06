@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -42,10 +43,17 @@ namespace AdoNetLesson1
 
         private void showDebtorsBtn_Click(object sender, RoutedEventArgs e)
         {
-            viewModel.db_connection.command.CommandText = "select * from Visitors as v where v.IsDebtor = 1";
-            viewModel.db_connection.reader = viewModel.db_connection.command.ExecuteReader();
+            SqlCommand comm = new SqlCommand("select * from Visitors as v where v.IsDebtor = @isDebtor", DbConnect.connection);
+            comm.Parameters.AddWithValue("@isDebtor", 1);
+            viewModel.db_connection.reader = comm.ExecuteReader();
 
             string str="==========================================";
+            if (!viewModel.db_connection.reader.HasRows)
+            {
+                MessageBox.Show("Haven`t");
+                viewModel.db_connection.reader.Close();
+                return;
+            }
             while (viewModel.db_connection.reader.Read())
             {
                 for (int j = 0; j < viewModel.db_connection.reader.FieldCount; j++)
@@ -55,6 +63,7 @@ namespace AdoNetLesson1
                 
                 str+= "\n==========================================";
             }
+            viewModel.db_connection.reader.Close();
             MessageBox.Show(str);
         }
 
@@ -62,6 +71,19 @@ namespace AdoNetLesson1
         {
             ShowBookWithAuthor showBookWithAuthor = new ShowBookWithAuthor(this);
             showBookWithAuthor.ShowDialog();
+        }
+
+        private void showVisitorBooks_Click(object sender, RoutedEventArgs e)
+        {
+            Window1 ShowVisitorBooks = new Window1(this);
+            ShowVisitorBooks.ShowDialog();
+        }
+
+        private void clearAllDebtsBtn_Click(object sender, RoutedEventArgs e)
+        {
+            viewModel.db_connection.command.CommandText = "update Visitors set IsDebtor = 0";
+            viewModel.db_connection.command.ExecuteNonQuery();
+            MessageBox.Show("All debts were cleared");
         }
     }
 }

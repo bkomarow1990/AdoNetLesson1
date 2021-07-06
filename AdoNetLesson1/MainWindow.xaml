@@ -17,12 +17,16 @@
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
         <Button Grid.Column="0" Name="addBook_btn" Click="addBook_btn_Click">Add Book</Button>
             <Button Grid.Column="1" Name="getCountVisitorsBtn" Click="getCountVisitorsBtn_Click">Get Count Visitors</Button>
             <Button Grid.Column="2" Name="showDebtorsBtn" Click="showDebtorsBtn_Click">Show borzhniki</Button>
             <Button Grid.Column="3" Name="showAuthorsWithBookName" Click="showAuthorsWithBookName_Click">showAuthorsWithBookName</Button>
             <Button Grid.Column="4" Name="clearDebts" Click="showAuthorsWithBookName_Click">showAuthorsWithBookName</Button>
+            <Button Grid.Column="5" Name="showVisitorBooks" Click="showVisitorBooks_Click">showVisitorBooks</Button>
+            <Button Grid.Column="5" Name="clearAllDebtsBtn" Click="clearAllDebtsBtn_Click">Clear all debts</Button>
         </Grid>
         <ListBox Grid.Row="1" x:Name="listBox">
             
